@@ -1,6 +1,26 @@
 
 #include <iostream>
 
+float findMin (int dim, float inpArray[]) {
+    float min = inpArray[0];
+    for( int n = 1; n < dim; n++) {
+        if ( inpArray[n] < min ) {
+            min = inpArray[n];
+        }
+    }
+    return min;
+}
+
+float findMax (int dim, float inpArray[]) {
+    float max = inpArray[0];
+    for( int n = 1; n < dim; n++) {
+        if ( inpArray[n] > max ) {
+            max = inpArray[n];
+        }
+    }
+    return max;
+}
+
 int main () {
 
     // trivial two-dimensional n-gon
@@ -9,39 +29,14 @@ int main () {
     float vertX[] = {2.0, 1.0, 4.0, 5.0};
     float vertY[] = {1.0, 3.0, 4.0, 2.0};
     float bBoxDx, bBoxDy;
-   // float bBoxX[4];
-   // float bBoxY[4];
-    
     int edgeList[] = {0, 1, 1, 2, 2, 3, 3, 0};
+    float xMin, xMax, yMin, yMax;
 
     // find dimensions for bounding box with O(n) search
-    float xMin = vertX[0];
-    for (int n = 1; n < nGon; n++) {
-        if ( vertX[n] < xMin) {
-	        xMin = vertX[n];
-        }
-    }
-
-    float xMax = vertX[0];
-    for (int n = 1; n < nGon; n++) {
-        if ( vertX[n] > xMax) {
-	        xMax = vertX[n];
-        }
-    }
-    
-    float yMin = vertY[0];
-    for (int n = 1; n < nGon; n++) {
-        if ( vertY[n] < yMin) {
-	        yMin = vertY[n];
-        }
-    }
-
-    float yMax = vertY[0];
-    for (int n = 1; n < nGon; n++) {
-        if ( vertY[n] > yMax) {
-	        yMax = vertY[n];
-        }
-    }
+    xMin = findMin(nGon, vertX);
+    xMax = findMax(nGon, vertX);
+    yMin = findMin(nGon, vertY);
+    yMax = findMax(nGon, vertY);
 
     // define bounding box and grow x and y by 10%
     bBoxDx = xMax - xMin;
