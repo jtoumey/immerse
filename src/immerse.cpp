@@ -124,19 +124,13 @@ void quadTree::insert(treeNode *node) {
         if (  nodeBound.centerY >= node->loc.y )
         {
             if ( nw == NULL )
-                /*nw = new quadTree( point(nodeBound.centerX - nodeBound.bBoxDx/2.0, nodeBound.centerY + nodeBound.bBoxDy/2.0), 
-                                   point(nodeBound.centerX, nodeBound.centerY));
-                                   */
-                nw = new quadTree( boundBox( nodeBound.centerX - nodeBound.bBoxDx/2.0, nodeBound.centerY + nodeBound.bBoxDy/2.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
+                nw = new quadTree( boundBox( nodeBound.centerX - nodeBound.bBoxDx/4.0, nodeBound.centerY + nodeBound.bBoxDy/4.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
             nw->insert(node);
         }
         else
         {
             if ( sw == NULL )
-               /* sw = new quadTree( point(nodeBound.centerX - nodeBound.bBoxDx/2.0, nodeBound.centerY), 
-                                   point(nodeBound.centerX, nodeBound.centerY - nodeBound.bBoxDy/2.0));
-                                   */
-                sw = new quadTree( boundBox( nodeBound.centerX - nodeBound.bBoxDx/2.0, nodeBound.centerY, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
+                sw = new quadTree( boundBox( nodeBound.centerX - nodeBound.bBoxDx/4.0, nodeBound.centerY - nodeBound.bBoxDy/4.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
             sw->insert(node);
         }
     }
@@ -146,19 +140,13 @@ void quadTree::insert(treeNode *node) {
         if ( nodeBound.centerY >= node->loc.y )
         {
             if ( ne == NULL )
-                /*ne = new quadTree( point(nodeBound.centerX, nodeBound.centerY + nodeBound.bBoxDy/2.0), 
-                                   point(nodeBound.centerX + nodeBound.bBoxDx/2.0, nodeBound.centerY));
-                                   */
-                ne = new quadTree( boundBox( nodeBound.centerX, nodeBound.centerY + nodeBound.bBoxDy/2.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
+                ne = new quadTree( boundBox( nodeBound.centerX + nodeBound.bBoxDx/4.0, nodeBound.centerY + nodeBound.bBoxDy/4.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
             ne->insert(node);
         }
         else
         {
             if ( se == NULL )
-                /*se = new quadTree( point(nodeBound.centerX, nodeBound.centerY), 
-                                   point(nodeBound.centerX + nodeBound.bBoxDx/2.0, nodeBound.centerY - nodeBound.bBoxDy/2.0));
-                                   */
-                se = new quadTree( boundBox(nodeBound.centerX, nodeBound.centerY,  nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
+                se = new quadTree( boundBox(nodeBound.centerX + nodeBound.bBoxDx/4.0, nodeBound.centerY - nodeBound.bBoxDy/4.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
             se->insert(node);
         }
     }
