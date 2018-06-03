@@ -97,9 +97,87 @@ class quadTree {
     void insert(treeNode*);
     treeNode* search(point);
     bool inBoundary(point);
-
-
 };
+
+// member fcns
+void quadTree::insert(treeNode *node) { 
+
+    if ( node == NULL)
+        return;
+
+    if (!inBoundary(node->loc))
+        return;
+
+    if ( nodeBound.bBoxDx <= 1.0 && 
+         nodeBound.bBoxDy <= 1.0 )
+    {
+        if ( n == NULL)
+            n = node;
+        return;
+    }
+
+    // compare the center of current node to center of passed in node
+    // if the x coordinate of current node center exceeds that of passed in, it's left hand side
+    if ( nodeBound.centerX >= node->loc.x )
+    {
+        // now test the y coordinate
+        if (  nodeBound.centerY >= node->loc.y )
+        {
+            if ( nw == NULL )
+                /*nw = new quadTree( point(nodeBound.centerX - nodeBound.bBoxDx/2.0, nodeBound.centerY + nodeBound.bBoxDy/2.0), 
+                                   point(nodeBound.centerX, nodeBound.centerY));
+                                   */
+                nw = new quadTree( boundBox( nodeBound.centerX - nodeBound.bBoxDx/2.0, nodeBound.centerY + nodeBound.bBoxDy/2.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
+            nw->insert(node);
+        }
+        else
+        {
+            if ( sw == NULL )
+               /* sw = new quadTree( point(nodeBound.centerX - nodeBound.bBoxDx/2.0, nodeBound.centerY), 
+                                   point(nodeBound.centerX, nodeBound.centerY - nodeBound.bBoxDy/2.0));
+                                   */
+                sw = new quadTree( boundBox( nodeBound.centerX - nodeBound.bBoxDx/2.0, nodeBound.centerY, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
+            sw->insert(node);
+        }
+    }
+    else
+    {
+        // now test the y coordinate
+        if ( nodeBound.centerY >= node->loc.y )
+        {
+            if ( ne == NULL )
+                /*ne = new quadTree( point(nodeBound.centerX, nodeBound.centerY + nodeBound.bBoxDy/2.0), 
+                                   point(nodeBound.centerX + nodeBound.bBoxDx/2.0, nodeBound.centerY));
+                                   */
+                ne = new quadTree( boundBox( nodeBound.centerX, nodeBound.centerY + nodeBound.bBoxDy/2.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
+            ne->insert(node);
+        }
+        else
+        {
+            if ( se == NULL )
+                /*se = new quadTree( point(nodeBound.centerX, nodeBound.centerY), 
+                                   point(nodeBound.centerX + nodeBound.bBoxDx/2.0, nodeBound.centerY - nodeBound.bBoxDy/2.0));
+                                   */
+                se = new quadTree( boundBox(nodeBound.centerX, nodeBound.centerY,  nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
+            se->insert(node);
+        }
+    }
+}
+
+bool quadTree::inBoundary(point p)
+{
+    // bounding box extent 
+    float xMin = nodeBound.centerX - nodeBound.bBoxDx/2.0;
+    float xMax = nodeBound.centerX + nodeBound.bBoxDx/2.0;
+    float yMin = nodeBound.centerY - nodeBound.bBoxDy/2.0;
+    float yMax = nodeBound.centerY + nodeBound.bBoxDy/2.0;
+
+    return (p.x >= xMin && 
+            p.x <= xMax &&
+            p.y >= yMin &&
+            p.y <= yMax);
+
+}
 
 float findMin (int dim, float inpArray[]) {
     float min = inpArray[0];
