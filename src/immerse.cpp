@@ -13,21 +13,6 @@ struct point
     point () { x = 0.0; y = 0.0; }
 };
 
-struct treeNode
-{
-    // a subdivision of the quadtree
-
-    // node location
-    point loc;
-
-    // information regarding intersection at node
-    int nodeData;
-    // constructors
-    treeNode ( point _loc, int _nodeData ) { loc = _loc; nodeData = _nodeData; }
-    // default, no position 
-    treeNode () { nodeData = 0; }
-};
-
 struct boundBox
 {
     // general bound box for polygon
@@ -49,6 +34,23 @@ struct boundBox
     boundBox () { centerX = 0.0; centerY = 0.0; bBoxDx = 0.0; bBoxDy = 0.0; } 
 };
 
+struct treeNode
+{
+    // a subdivision of the quadtree
+
+    // node location
+    point loc;
+
+    // treeNode needs a bounding box
+    boundBox nodeBound;
+
+    // information regarding intersection at node
+    int nodeData;
+    // constructors
+    treeNode ( point _loc, int _nodeData ) { loc = _loc; nodeData = _nodeData; }
+    // default, no position 
+    treeNode () { nodeData = 0; }
+};
 struct nGon
 {
     // the input polygon to immerse
@@ -224,4 +226,9 @@ int main () {
         std::cout << "(x, y) = (" << bBoxX[n] << ", " << bBoxY[n] << ")\n";
     }
     */
+
+    // new code for quadTree testing
+    quadTree center(boundBox(3.0, 2.5, 4.0, 3.0));
+    treeNode a(point(2.0,2.0), 1);
+    center.insert(&a);
 }
