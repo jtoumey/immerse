@@ -1,7 +1,8 @@
 
 #include <iostream>
 
-struct point
+// implement later after the basics are working
+/*struct point
 {
     // generic point, for reuse
     float x;
@@ -11,150 +12,121 @@ struct point
     point(float _x, float _y) { x = _x; y = _y; }
     // additional default constructor
     point () { x = 0.0; y = 0.0; }
-};
+};*/
 
-struct boundBox
-{
-    // general bound box for polygon
-    // future implementation
-    //std::vector<float> center;
-    // or just make this a struct point
-    float centerX;
-    float centerY;
-
-    float bBoxDx;
-    float bBoxDy;
-    boundBox ( float _centerX, float _centerY, float _bBoxDx, float _bBoxDy ) 
-    {
-        centerX = _centerX;
-        centerY = _centerY;
-        bBoxDx = _bBoxDx;
-        bBoxDy = _bBoxDy;
-    }
-    boundBox () { centerX = 0.0; centerY = 0.0; bBoxDx = 0.0; bBoxDy = 0.0; } 
-};
-
-struct treeNode
-{
-    // a subdivision of the quadtree
-
-    // node location
-    point loc;
-
-    // treeNode needs a bounding box
-    boundBox nodeBound;
-
-    // information regarding intersection at node
-    int nodeData;
-    // constructors
-    treeNode ( point _loc, int _nodeData ) { loc = _loc; nodeData = _nodeData; }
-    // default, no position 
-    treeNode () { nodeData = 0; }
-};
-struct nGon
-{
+class nGon {
+public:
     // the input polygon to immerse
     int numEdges;
     std::vector<int> edgeList();
     std::vector<float> vertX(), vertY();
     // hide to debug
    // boundBox nGonBbox;
+
+    float findMin(std::vector<float>); 
+    float findMax(std::vector<float>);
 };
-
-class quadTree {
-
-    // for the current node in the tree, reuse the boundBox to store node geometry
-    boundBox nodeBound;
-
-    // for the current node, store location and intersection data
-    treeNode *n;
-
-    // child nodes
-    quadTree *nw;
-    quadTree *ne;
-    quadTree *se;
-    quadTree *sw;
-
-    public:
-        // default constructor
-        quadTree ()
-        {
-            nodeBound = boundBox(0, 0, 0, 0);
-            n = NULL;
-            nw = NULL;
-            ne = NULL;
-            se = NULL;
-            sw = NULL;
-        }
-        // constructor
-        quadTree (boundBox _bound)
-        {
-            nodeBound = boundBox(_bound);
-            n = NULL;
-            nw = NULL;
-            ne = NULL;
-            se = NULL;
-            sw = NULL;
-        }
-    void insert(treeNode*);
-    treeNode* search(point);
-    bool inBoundary(point);
-};
-
-// member fcns
-void quadTree::insert(treeNode *node) { 
-
-    if ( node == NULL)
-        return;
-
-    if (!inBoundary(node->loc))
-        return;
-
-    if ( nodeBound.bBoxDx <= 1.0 && 
-         nodeBound.bBoxDy <= 1.0 )
-    {
-        if ( n == NULL)
-            n = node;
-        return;
-    }
-
-    // compare the center of current node to center of passed in node
-    // if the x coordinate of current node center exceeds that of passed in, it's left hand side
-    if ( nodeBound.centerX >= node->loc.x )
-    {
-        // now test the y coordinate
-        if (  nodeBound.centerY >= node->loc.y )
-        {
-            if ( nw == NULL )
-                nw = new quadTree( boundBox( nodeBound.centerX - nodeBound.bBoxDx/4.0, nodeBound.centerY + nodeBound.bBoxDy/4.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
-            nw->insert(node);
-        }
-        else
-        {
-            if ( sw == NULL )
-                sw = new quadTree( boundBox( nodeBound.centerX - nodeBound.bBoxDx/4.0, nodeBound.centerY - nodeBound.bBoxDy/4.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
-            sw->insert(node);
+float nGon::createBoundary(void)
+{
+    // find min and max of x vertices 
+    // float xMin = findMin(vertX);
+    // float xMax = findMax(vertX);
+    // find min and max of y vertices 
+    // calculate bounding box dimensions 
+    // expand by 10% each side 
+}
+float nGon::findMin(float inpArray)
+{
+    float min = edgeList[0];
+    for(int n = 1; n < dim; n++) {
+        if ( inpArray[n] < min ) {
+            min = inpArray[n];
         }
     }
-    else
-    {
-        // now test the y coordinate
-        if ( nodeBound.centerY >= node->loc.y )
-        {
-            if ( ne == NULL )
-                ne = new quadTree( boundBox( nodeBound.centerX + nodeBound.bBoxDx/4.0, nodeBound.centerY + nodeBound.bBoxDy/4.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
-            ne->insert(node);
-        }
-        else
-        {
-            if ( se == NULL )
-                se = new quadTree( boundBox(nodeBound.centerX + nodeBound.bBoxDx/4.0, nodeBound.centerY - nodeBound.bBoxDy/4.0, nodeBound.bBoxDx/2.0, nodeBound.bBoxDy/2.0));
-            se->insert(node);
-        }
-    }
+    return min;
 }
 
-bool quadTree::inBoundary(point p)
+float nGon::findMax (float inpArray[]) {
+    float max = inpArray[0];
+    for(int n = 1; n < dim; n++) {
+        if(inpArray[n] > max) {
+            max = inpArray[n];
+        }
+    }
+    return max;
+}
+
+class node {
+   
+    float x, y;
+    float dx, dy;
+    int data;
+    int level;
+public:
+    node *northWest;
+    node *northEast;
+    node *southWest;
+    node *southEast;
+
+ //public:    
+    node (float _x, float _y, float _dx, float _dy, int _data, int _level) {
+        x     = _x; 
+        y     = _y;
+        dx    = _dx;
+        dy    = _dy;
+        data  = _data;
+        level = _level;
+
+        northWest = NULL;
+        northEast = NULL;
+        southWest = NULL;
+        southEast = NULL;
+    }
+    node () {
+        northWest = NULL;
+        northEast = NULL;
+        southWest = NULL;
+        southEast = NULL;
+    }
+    void insert(void);
+    void printNode(void);
+};
+
+void node::insert(void) {
+
+    northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
+    southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
+    northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
+    southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
+}
+
+void node::printNode(void) {
+    
+    std::cout << "NODE LEVEL: " << level << std::endl;
+    std::cout << "Node center     ( x,  y): (" << x << ", " << y << ")" << std::endl;
+    std::cout << "Node dimensions (dx, dy): (" << dx << ", " << dy << ")" << std::endl;
+}
+
+/*
+void tree::refine(node *n) {
+    
+    // Generic refinement: recursively refine cells without bound. 
+    float dxNext = n->dx/2.0;
+    float dyNext = n->dy/2.0;
+    int i = 0;
+    while (i <5 ) {
+    northWest->refine(n);
+    northEast->refine(n);
+    southWest->refine(n);
+    southEast->refine(n);
+
+    i++;
+    }
+
+    std::cout << "refining...";
+ }
+
+bool node::inBoundary(point p)
 {
     // bounding box extent 
     float xMin = nodeBound.centerX - nodeBound.bBoxDx/2.0;
@@ -167,27 +139,7 @@ bool quadTree::inBoundary(point p)
             p.y >= yMin &&
             p.y <= yMax);
 
-}
-
-float findMin (int dim, float inpArray[]) {
-    float min = inpArray[0];
-    for( int n = 1; n < dim; n++) {
-        if ( inpArray[n] < min ) {
-            min = inpArray[n];
-        }
-    }
-    return min;
-}
-
-float findMax (int dim, float inpArray[]) {
-    float max = inpArray[0];
-    for( int n = 1; n < dim; n++) {
-        if ( inpArray[n] > max ) {
-            max = inpArray[n];
-        }
-    }
-    return max;
-}
+}*/
 
 int main () {
 
@@ -203,6 +155,7 @@ int main () {
     float xMin, xMax, yMin, yMax;
 
     // find dimensions for bounding box with O(n) search
+    // all this needs to be in a member function
     xMin = findMin(nGon, vertX);
     xMax = findMax(nGon, vertX);
     yMin = findMin(nGon, vertY);
@@ -219,16 +172,22 @@ int main () {
 
     float bBoxX[] = {xMin, xMin, xMax, xMax};
     float bBoxY[] = {yMin, yMax, yMax, yMin};
-
-    // test print
-    std::cout << "B box coordinates:\n";
-    for ( int n = 0; n < nGon; n++ ) {
-        std::cout << "(x, y) = (" << bBoxX[n] << ", " << bBoxY[n] << ")\n";
-    }
     */
 
-    // new code for quadTree testing
-    quadTree center(boundBox(3.0, 2.5, 4.0, 3.0));
-    treeNode a(point(2.0,2.0), 1);
-    center.insert(&a);
+    // working quadtree 
+    node *root0;
+    root0 = new node(4.0, 3.0, 2.0, 2.0, 1, 0);
+    
+    node *tempPtr = new node(*root0);
+    for(int i = 0; i < 10; i++) {
+
+
+
+        (*tempPtr).insert();
+        (*tempPtr).printNode();
+
+        tempPtr = (*tempPtr).northWest;
+    }
+
+    return 0;
 }
