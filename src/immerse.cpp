@@ -27,12 +27,12 @@ public:
     float xMin, xMax, yMin, yMax;
     float c_x, c_y; // center
 
-    float createBoundary(void);
+    void createBoundary(void);
     float findMin(std::vector<float>);
     float findMax(std::vector<float>);
 };
 
-float nGon::createBoundary(void)
+void nGon::createBoundary(void)
 {
 
 
@@ -114,6 +114,7 @@ public:
     void printNode2(void);
     void refine(void);
     void writeFile(void);
+    bool inBoundary(float, float);
 };
 
 void node::insert(void) {
@@ -160,21 +161,21 @@ void node::refine(void) {
         southEast->printNode2();
     }
 }
-/*
-bool node::inBoundary(point p)
+
+bool node::inBoundary(float p_x, float p_y)
 {
     // bounding box extent 
-    float xMin = nodeBound.centerX - nodeBound.bBoxDx/2.0;
-    float xMax = nodeBound.centerX + nodeBound.bBoxDx/2.0;
-    float yMin = nodeBound.centerY - nodeBound.bBoxDy/2.0;
-    float yMax = nodeBound.centerY + nodeBound.bBoxDy/2.0;
+    float xMin = x - dx/2.0;
+    float xMax = x + dx/2.0;
+    float yMin = y - dy/2.0;
+    float yMax = y + dy/2.0;
 
-    return (p.x >= xMin && 
-            p.x <= xMax &&
-            p.y >= yMin &&
-            p.y <= yMax);
+    return (p_x >= xMin && 
+            p_x <= xMax &&
+            p_y >= yMin &&
+            p_y <= yMax);
 
-}*/
+}
 
 int main () {
 
@@ -211,45 +212,7 @@ int main () {
 
         tempPtr = (*tempPtr).northWest;
     }
-/*
-    node *root1;
-    root1 = new node(polygon0.c_x, polygon0.c_y, polygon0.dx, polygon0.dy, 1, 0);
 
-    node *temp2 = new node(*root1);
-
-    int max_level = 5;
-    node *parentKey;
-    parentKey = temp2;
-
-    while(temp2->level < max_level) {
-        //create all four children
-        (*temp2).insert();
-        //(*temp2).printNode();
-        temp2 = (*temp2).northWest;
-    }
-    temp2 = parentKey;
-
-    while(temp2->level < max_level) {
-        //create all four children
-        (*temp2).insert();
-        temp2 = (*temp2).northEast;
-    }
-    temp2 = parentKey;
-    while(temp2->level < max_level) {
-        //create all four children
-        (*temp2).insert();
-        temp2 = (*temp2).southWest;
-    }
-    temp2 = parentKey;
-    while(temp2->level < max_level) {
-        //create all four children
-        (*temp2).insert();
-        temp2 = (*temp2).southEast;
-    }
-    temp2 = parentKey;*/
-    //
-    //
-    //
     //void foo (std::ofstream& dumFile) {}
 
     //ofstream pc_output;
