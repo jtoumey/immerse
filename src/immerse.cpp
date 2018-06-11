@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <vector>
 
 // implement later after the basics are working
 /*struct point
@@ -20,40 +21,59 @@ public:
     int numEdges;
     std::vector<int> edgeList();
     std::vector<float> vertX(), vertY();
+    float dx, dy;
     // hide to debug
    // boundBox nGonBbox;
 
-    float findMin(std::vector<float>); 
-    float findMax(std::vector<float>);
+    float findMin(std::vector<float>*);
+    float findMax(std::vector<float>*);
+    float createBoundary(void);
 };
-float nGon::createBoundary(void)
-{
-    // find min and max of x vertices 
-    // float xMin = findMin(vertX);
-    // float xMax = findMax(vertX);
-    // find min and max of y vertices 
-    // calculate bounding box dimensions 
-    // expand by 10% each side 
-}
-float nGon::findMin(float inpArray)
-{
-    float min = edgeList[0];
-    for(int n = 1; n < dim; n++) {
-        if ( inpArray[n] < min ) {
+
+float nGon::findMin(std::vector<float>* inpArray) {
+
+    float min = inpArray[0];
+
+    for (int n = 1; n < numEdges; n++) {
+        if (inpArray[n] < min) {
             min = inpArray[n];
         }
     }
     return min;
 }
 
-float nGon::findMax (float inpArray[]) {
+float nGon::findMax (std::vector<float>* inpArray) {
+
     float max = inpArray[0];
-    for(int n = 1; n < dim; n++) {
-        if(inpArray[n] > max) {
+
+    for (int n = 1; n < numEdges; n++) {
+        if (inpArray[n] > max) {
             max = inpArray[n];
         }
     }
     return max;
+}
+
+float nGon::createBoundary(void)
+{
+    // find min and max of x vertices 
+    float xMin = findMin(&vertX);
+    float xMax = findMax(&vertX);
+    // find min and max of y vertices 
+    float yMin = findMin(&vertY);
+    float yMax = findMax(&vertY);
+    // calculate bounding box dimensions 
+    // expand by 10% each side 
+    dx = xMax - xMin;
+    dy = yMax - yMin;
+
+    xMin = xMin - 0.05*dx;
+    xMax = xMax + 0.05*dx;
+    yMin = yMin - 0.05*dy;
+    yMax = yMax + 0.05*dy;
+
+    float bBoxX[] = {xMin, xMin, xMax, xMax};
+    float bBoxY[] = {yMin, yMax, yMax, yMin};
 }
 
 class node {
@@ -108,23 +128,6 @@ void node::printNode(void) {
 }
 
 /*
-void tree::refine(node *n) {
-    
-    // Generic refinement: recursively refine cells without bound. 
-    float dxNext = n->dx/2.0;
-    float dyNext = n->dy/2.0;
-    int i = 0;
-    while (i <5 ) {
-    northWest->refine(n);
-    northEast->refine(n);
-    southWest->refine(n);
-    southEast->refine(n);
-
-    i++;
-    }
-
-    std::cout << "refining...";
- }
 
 bool node::inBoundary(point p)
 {
@@ -152,26 +155,6 @@ int main () {
     float vertY[] = {1.0, 3.0, 4.0, 2.0};
     float bBoxDx, bBoxDy;
     int edgeList[] = {0, 1, 1, 2, 2, 3, 3, 0};
-    float xMin, xMax, yMin, yMax;
-
-    // find dimensions for bounding box with O(n) search
-    // all this needs to be in a member function
-    xMin = findMin(nGon, vertX);
-    xMax = findMax(nGon, vertX);
-    yMin = findMin(nGon, vertY);
-    yMax = findMax(nGon, vertY);
-
-    // define bounding box and grow x and y by 10%
-    bBoxDx = xMax - xMin;
-    bBoxDy = yMax - yMin;
-
-    xMin = xMin - 0.05*bBoxDx;
-    xMax = xMax + 0.05*bBoxDx;
-    yMin = yMin - 0.05*bBoxDy;
-    yMax = yMax + 0.05*bBoxDy;
-
-    float bBoxX[] = {xMin, xMin, xMax, xMax};
-    float bBoxY[] = {yMin, yMax, yMax, yMin};
     */
 
     // working quadtree 
@@ -179,9 +162,7 @@ int main () {
     root0 = new node(4.0, 3.0, 2.0, 2.0, 1, 0);
     
     node *tempPtr = new node(*root0);
-    for(int i = 0; i < 10; i++) {
-
-
+    for (int i = 0; i < 10; i++) {
 
         (*tempPtr).insert();
         (*tempPtr).printNode();
