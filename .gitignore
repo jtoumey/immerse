@@ -1,3 +1,6 @@
 # Binaries
 *.o
 *.out
+
+# MacOS
+.DS_STORE
