@@ -39,14 +39,17 @@ void node::refine(void) {
         northWest->printNode2();
         northWest->refine();
 
+        printNode2();
         southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
         southWest->printNode2();
         southWest->refine();
 
+        printNode2();
         northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
         northEast->refine();
         northEast->printNode2();
 
+        printNode2();
         southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
         southEast->refine();
         southEast->printNode2();
@@ -83,27 +86,13 @@ void node::recurseTree(std::ostream &pointfile)
 
     pointfile << x << "    " << y << std::endl;
 
-    if (northWest != NULL) {
+    if (is_leaf == false) {
         northWest->recurseTree(pointfile);
-    }
-    if (southWest != NULL) {
         southWest->recurseTree(pointfile);
-    }
-    if (northEast != NULL) {
         northEast->recurseTree(pointfile);
-    }
-    if (southEast != NULL) {
         southEast->recurseTree(pointfile);
-    }
+    } 
     else {
         return;
     }
-
-   // if (is_leaf == false) {
-    //    northWest->recurseTree(pointfile);
-     //   southWest->recurseTree(pointfile);
-    //    northEast->recurseTree(pointfile);
-    //    southWest->recurseTree(pointfile);
-   // 
-
 }
