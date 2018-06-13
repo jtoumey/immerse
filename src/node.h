@@ -1,38 +1,7 @@
-// implement later after the basics are working
-/*struct point
-{
-    // generic point, for reuse
-    float x;
-    float y;
-
-    // constructor
-    point(float _x, float _y) { x = _x; y = _y; }
-    // additional default constructor
-    point () { x = 0.0; y = 0.0; }
-};*/
-
-#ifndef IMMERSE_H
-#define IMMERSE_H
+#ifndef NODE_H
+#define NODE_H
 
 #include <iostream>
-#include <vector>
-#include <fstream>
-
-class nGon {
-public:
-    // the input polygon to immerse
-    int numEdges;
-    std::vector<int> edgeList();
-    std::vector<float> vertX;
-    std::vector<float> vertY;
-    float dx, dy;
-    float xMin, xMax, yMin, yMax;
-    float c_x, c_y; // center
-
-    void createBoundary(void);
-    float findMin(std::vector<float>);
-    float findMax(std::vector<float>);
-};
 
 class node {
 public:   
@@ -71,6 +40,7 @@ public:
     void printNode2(void);
     void refine(void);
     bool inBoundary(float, float);
+    void traverseTree(void);
 };
 
-#endif // IMMERSE_H
+#endif // NODE_H
