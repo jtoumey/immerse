@@ -48,7 +48,9 @@ int main () {
 
     (*parentKey).printNode2();
 
-    (*parentKey).refine();
+    (*temp2).refine();
+
+    (*parentKey).traverseTree();
 
     return 0;
 }

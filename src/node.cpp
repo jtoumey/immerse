@@ -1,6 +1,9 @@
 #include "node.h"
+#include <fstream>
 
 void node::insert(void) {
+
+    is_leaf = false;
 
     northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
     southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
@@ -16,16 +19,21 @@ void node::printNode(void) {
 }
 
 void node::printNode2(void) {
-    std::cout << x << "    " << y << std::endl;
+    // Print cell centers to the terminal for plotting and verification
+    //std::cout << x << "    " << y << std::endl;
+    std::cout << x << "    " << y << "    " << is_leaf << std::endl;
+    //std::cout << "Is Leaf? " << is_leaf << std::endl;
 }
 
 void node::refine(void) {
-    int max_level = 3;
+    int max_level = 2;
     if (this->level >= max_level) {
         //std::cout << "Exceeded " << max_level << " levels of refinement. Exiting...\n";
         return;
     }
     else {
+        is_leaf = false;
+
         northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
         //this->printNode();
         northWest->printNode2();
@@ -57,5 +65,45 @@ bool node::inBoundary(float p_x, float p_y)
             p_x <= xMax &&
             p_y >= yMin &&
             p_y <= yMax);
+
+}
+
+void node::traverseTree(void)
+{
+    std::ofstream pointfile;
+    pointfile.open ("point_cloud.dat");
+
+    recurseTree(pointfile);
+
+    pointfile.close();
+}
+
+void node::recurseTree(std::ostream &pointfile)
+{
+
+    pointfile << x << "    " << y << std::endl;
+
+    if (northWest != NULL) {
+        northWest->recurseTree(pointfile);
+    }
+    if (southWest != NULL) {
+        southWest->recurseTree(pointfile);
+    }
+    if (northEast != NULL) {
+        northEast->recurseTree(pointfile);
+    }
+    if (southEast != NULL) {
+        southEast->recurseTree(pointfile);
+    }
+    else {
+        return;
+    }
+
+   // if (is_leaf == false) {
+    //    northWest->recurseTree(pointfile);
+     //   southWest->recurseTree(pointfile);
+    //    northEast->recurseTree(pointfile);
+    //    southWest->recurseTree(pointfile);
+   // 
 
 }
