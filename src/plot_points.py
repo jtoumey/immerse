@@ -9,4 +9,4 @@ with open('point_cloud.dat') as f:
 
 plt.scatter(x, y)
 plt.show()
-plt.savefig('qt.png')
+#plt.savefig('qt.png')
