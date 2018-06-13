@@ -2,5 +2,10 @@
 *.o
 *.out
 
+# Data files
+*.dat
+*.txt
+*.csv
+
 # MacOS
 .DS_STORE
