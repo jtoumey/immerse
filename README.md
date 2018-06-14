@@ -2,4 +2,4 @@
 
 Point cloud
 
-![qt](https://ibb.co/ceKted)
+![Alt text](/src/qt.png)
