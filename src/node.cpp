@@ -72,10 +72,10 @@ bool node::inBoundary(float p_x, float p_y)
             p_y <= yMax);
 }
 
-void node::traverseTree(void)
+void node::traverseTree(const std::string &pc_output)
 {
     std::ofstream pointfile;
-    pointfile.open ("point_cloud.dat");
+    pointfile.open (pc_output);
 
     recurseTree(pointfile);
 

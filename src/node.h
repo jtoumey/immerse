@@ -44,7 +44,7 @@ public:
     void printNode2(void);
     void refine(void);
     bool inBoundary(float, float);
-    void traverseTree(void);
+    void traverseTree(const std::string&);
     void recurseTree(std::ostream&);
 };
 

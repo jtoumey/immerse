@@ -26,17 +26,22 @@ int main () {
 
     // working quadtree 
     node *root0;
+    node *tempPtr;
     root0 = new node(4.0, 3.0, 2.0, 2.0, 1, 0);
     
-    node *tempPtr = new node(*root0);
-    for (int i = 0; i < 10; i++) {
+    //node *tempPtr = new node(*root0);
+    tempPtr = root0;
+    for (int i = 0; i < 6; i++) {
 
         (*tempPtr).insert();
-        (*tempPtr).printNode();
+        (*tempPtr).printNode2();
 
         tempPtr = (*tempPtr).northWest;
     }
+    std::string fname = "pc_insert.dat";
+    (*root0).traverseTree(fname);
 
+    
     node *root1;
     //root1 = new node(polygon0.c_x, polygon0.c_y, polygon0.dx, polygon0.dy, 1, 0);
     root1 = new node(2.0, 2.0, 4.0, 4.0, 1, 0);
@@ -50,7 +55,8 @@ int main () {
 
     (*temp2).refine();
 
-    (*parentKey).traverseTree();
+    std::string fname2 = "pc_refine.dat";
+    (*parentKey).traverseTree(fname2);
 
     return 0;
 }
