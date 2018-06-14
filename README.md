@@ -3,6 +3,7 @@
 ## Point Cloud
 
 ![Alt text](/src/qt.png)
+
 _Node centers for nodes in the quadtree._
 
 This project is a quadtree implementation in C++.
