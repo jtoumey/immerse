@@ -6,6 +6,7 @@
 class node {
 
 public:   
+    // node center
     float x, y;
     float dx, dy;
     int data;
@@ -46,6 +47,7 @@ public:
     bool inBoundary(float, float);
     void traverseTree(const std::string&);
     void recurseTree(std::ostream&);
+    node * refinePoint(float, float);
 };
 
 #endif // NODE_H
