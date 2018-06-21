@@ -56,7 +56,7 @@ void node::refine(void)
     // Prevent excessive refinement (refinement creates 4^(max_level) nodes which can cause segfaults)
     if (this->level >= node::max_level)
     {
-        //std::cout << "Exceeded " << max_level << " levels of refinement. Exiting...\n";
+        std::cout << "Exceeded " << node::max_level << " levels of refinement. Exiting...\n";
         return;
     }
     else
@@ -133,7 +133,7 @@ void node::recurseTree(std::ostream &pointfile)
     }
 }
 
-node * node::refinePoint(float p_x, float p_y) 
+node *node::refinePoint(float p_x, float p_y) 
 {
     // Detect if the point is in the west half of the node
     if (p_x <= x)
@@ -146,14 +146,14 @@ node * node::refinePoint(float p_x, float p_y)
             std::cout << "Point is in the Northwest corner\n";
 	  //  northWest->insert();
 	    is_leaf = false;
-            northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
+        northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
 	    return northWest;
 	}
 	else
 	{
 	    // refine southwest
 	    is_leaf = false;
-            southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
+        southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
 	    return southWest;
 	}
     }
@@ -163,15 +163,35 @@ node * node::refinePoint(float p_x, float p_y)
 	{
 	    // refine northeast
 	    is_leaf = false;
-            northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
+        northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
 	    return northEast;
 	}
 	else
 	{
             // refine southeast
 	    is_leaf = false;
-            southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
+        southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
 	    return southEast;
 	}
     }
+}
+
+void node::refinePointWrapper()
+{
+    //std::cout << "\nTest Number Four: Wrapper...\n";
+    std::string fname3 = "pc_refinePointWrapper.dat";
+ 
+    node *tempPtr3 = this;
+    std::cout << tempPtr3->level << std::endl;
+
+    int ii = 0;
+    while (tempPtr3->level < 5)
+    //while (ii < 10)
+    {
+        tempPtr3 = (*tempPtr3).refinePoint(1.01, 3.013);
+        tempPtr3->printNode2();
+        std::cout << "Level: " << tempPtr3->level << std::endl;
+        ii++;
+    }
+    this->traverseTree(fname3);
 }

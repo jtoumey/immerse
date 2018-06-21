@@ -34,6 +34,7 @@ public:
     void traverseTree(const std::string&);
     void recurseTree(std::ostream&);
     node * refinePoint(float, float);
+    void refinePointWrapper(void);
 };
 
 #endif // NODE_H

@@ -64,23 +64,33 @@ int main () {
      *
      */
 
-    std::cout << "\nTest Number Three...\n";
-    std::string fname3 = "pc_refinePoint.dat";
+    std::cout << "\nTest Number Three: Wrapper...\n";
  
     node *root3;
-    node *tempPtr3;
     root3 = new node(2.0, 2.0, 4.0, 4.0, 1, 0);
 
-    tempPtr3 = root3;
+    root3->refinePointWrapper();
 
-    tempPtr3->printNode2();
-    while (tempPtr3->level < 4)
+
+
+    std::cout << "\nTest Number Four...\n";
+    std::string fname3 = "pc_refinePoint.dat";
+ 
+    node *root4;
+    node *tempPtr4;
+    root4 = new node(2.0, 2.0, 4.0, 4.0, 1, 0);
+
+
+    tempPtr4 = root4;
+
+    tempPtr4->printNode2();
+    while (tempPtr4->level < 4)
     {
-        tempPtr3 = (*tempPtr3).refinePoint(1.01, 3.013);
-        tempPtr3->printNode2();
+        tempPtr4 = (*tempPtr4).refinePoint(1.01, 3.013);
+        tempPtr4->printNode2();
     }
     std::cout << "printing...\n";
-    (*root3).traverseTree(fname3);
+    (*root4).traverseTree(fname3);
 
     
 
