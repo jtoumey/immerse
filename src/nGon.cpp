@@ -3,10 +3,10 @@
 void nGon::createBoundary(void)
 {
 
-
     // find min and max of x vertices 
     xMin = findMin(vertX);
     xMax = findMax(vertX);
+    
     yMin = findMin(vertY);
     yMax = findMax(vertY);
 

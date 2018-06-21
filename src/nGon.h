@@ -4,6 +4,7 @@
 #include <vector>
 
 class nGon {
+
 public:
     // the input polygon to immerse
     int numEdges;

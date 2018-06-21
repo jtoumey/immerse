@@ -1,6 +1,33 @@
 #include "node.h"
 #include <fstream>
 
+int node::max_level = 2;
+
+node::node () 
+{
+    is_leaf = true;
+    northWest = NULL;
+    northEast = NULL;
+    southWest = NULL;
+    southEast = NULL;
+}
+
+node::node (float _x, float _y, float _dx, float _dy, int _data, int _level) 
+{
+    x     = _x; 
+    y     = _y;
+    dx    = _dx;
+    dy    = _dy;
+    data  = _data;
+    level = _level;
+
+    is_leaf = true;
+    northWest = NULL;
+    northEast = NULL;
+    southWest = NULL;
+    southEast = NULL;
+}
+
 void node::insert(void)
 {
     is_leaf = false;
@@ -27,9 +54,7 @@ void node::printNode2(void)
 void node::refine(void)
 {
     // Prevent excessive refinement (refinement creates 4^(max_level) nodes which can cause segfaults)
-    int max_level = 2;
-
-    if (this->level >= max_level)
+    if (this->level >= node::max_level)
     {
         //std::cout << "Exceeded " << max_level << " levels of refinement. Exiting...\n";
         return;
@@ -150,4 +175,3 @@ node * node::refinePoint(float p_x, float p_y)
 	}
     }
 }
-

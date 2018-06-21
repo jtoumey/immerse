@@ -11,6 +11,9 @@ public:
     float dx, dy;
     int data;
     int level;
+
+    // Static maximum level of refinement
+    static int max_level;
     bool is_leaf;
 
     // Pointers to child nodes
@@ -19,27 +22,10 @@ public:
     node *southWest;
     node *southEast;
 
-    node (float _x, float _y, float _dx, float _dy, int _data, int _level) {
-        x     = _x; 
-        y     = _y;
-        dx    = _dx;
-        dy    = _dy;
-        data  = _data;
-        level = _level;
+    // Constructors: Default and for during a refinement/insert operation
+    node ();
+    node (float _x, float _y, float _dx, float _dy, int _data, int _level);
 
-        is_leaf = true;
-        northWest = NULL;
-        northEast = NULL;
-        southWest = NULL;
-        southEast = NULL;
-    }
-    node () {
-        is_leaf = true;
-        northWest = NULL;
-        northEast = NULL;
-        southWest = NULL;
-        southEast = NULL;
-    }
     void insert(void);
     void printNode(void);
     void printNode2(void);
