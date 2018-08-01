@@ -14,6 +14,12 @@ public:
 
     // Static maximum level of refinement
     static int max_level;
+
+    /* 
+     *  Static flag for printing to file
+     */
+    static bool print_flag;
+    
     bool is_leaf;
 
     // Pointers to child nodes

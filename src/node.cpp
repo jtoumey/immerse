@@ -2,6 +2,7 @@
 #include <fstream>
 
 int node::max_level = 2;
+bool node::print_flag = true;
 
 node::node () 
 {
@@ -135,6 +136,7 @@ void node::recurseTree(std::ostream &pointfile)
 
 node *node::refinePoint(float p_x, float p_y) 
 {
+    // Assumes starting from a blank tree, no existing children.
     // Detect if the point is in the west half of the node
     if (p_x <= x)
     {
@@ -178,20 +180,16 @@ node *node::refinePoint(float p_x, float p_y)
 
 void node::refinePointWrapper()
 {
-    //std::cout << "\nTest Number Four: Wrapper...\n";
     std::string fname3 = "pc_refinePointWrapper.dat";
  
     node *tempPtr3 = this;
-    std::cout << tempPtr3->level << std::endl;
 
-    int ii = 0;
     while (tempPtr3->level < 5)
-    //while (ii < 10)
     {
         tempPtr3 = (*tempPtr3).refinePoint(1.01, 3.013);
         tempPtr3->printNode2();
         std::cout << "Level: " << tempPtr3->level << std::endl;
-        ii++;
     }
+    
     this->traverseTree(fname3);
 }
