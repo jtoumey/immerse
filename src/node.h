@@ -34,7 +34,6 @@ public:
 
     void insert(void);
     void printNode(void);
-    void printNode2(void);
     void refine(void);
     bool inBoundary(float, float);
     void traverseTree(const std::string&);

@@ -41,15 +41,11 @@ void node::insert(void)
 
 void node::printNode(void)
 {
-    std::cout << "NODE LEVEL: " << level << std::endl;
+    std::cout << "*************************"  << std::endl;
+    std::cout << "              Node level: " << level << std::endl;
+    std::cout << "        Node leaf status: " << is_leaf << std::endl;
     std::cout << "Node center     ( x,  y): (" << x << ", " << y << ")" << std::endl;
     std::cout << "Node dimensions (dx, dy): (" << dx << ", " << dy << ")" << std::endl;
-}
-
-void node::printNode2(void)
-{
-    // Print cell centers to the terminal for plotting and verification
-    std::cout << x << "    " << y << "    " << is_leaf << std::endl;
 }
 
 void node::refine(void)
@@ -66,19 +62,19 @@ void node::refine(void)
         is_leaf = false;
 
         northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
-        northWest->printNode2();
+        northWest->printNode();
         northWest->refine();
 
         southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
-        southWest->printNode2();
+        southWest->printNode();
         southWest->refine();
 
         northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
-        northEast->printNode2();
+        northEast->printNode();
         northEast->refine();
 
         southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
-        southEast->printNode2();
+        southEast->printNode();
         southEast->refine();
     }
 }
@@ -187,7 +183,7 @@ void node::refinePointWrapper()
     while (tempPtr3->level < 5)
     {
         tempPtr3 = (*tempPtr3).refinePoint(1.01, 3.013);
-        tempPtr3->printNode2();
+        tempPtr3->printNode();
         std::cout << "Level: " << tempPtr3->level << std::endl;
     }
     

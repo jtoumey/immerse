@@ -34,7 +34,7 @@ int main () {
     for (int i = 0; i < 6; i++) {
 
         (*tempPtr).insert();
-        (*tempPtr).printNode2();
+        (*tempPtr).printNode();
 
         tempPtr = (*tempPtr).northWest;
     }
@@ -51,7 +51,7 @@ int main () {
     node *parentKey;
     parentKey = temp2;
 
-    (*parentKey).printNode2();
+    (*parentKey).printNode();
 
     (*temp2).refine();
 
@@ -83,11 +83,11 @@ int main () {
 
     tempPtr4 = root4;
 
-    tempPtr4->printNode2();
+    tempPtr4->printNode();
     while (tempPtr4->level < 4)
     {
         tempPtr4 = (*tempPtr4).refinePoint(1.01, 3.013);
-        tempPtr4->printNode2();
+        tempPtr4->printNode();
     }
     std::cout << "printing...\n";
     (*root4).traverseTree(fname3);
