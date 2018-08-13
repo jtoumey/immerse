@@ -84,9 +84,9 @@ int main () {
     tempPtr4 = root4;
 
     tempPtr4->printNode();
-    while (tempPtr4->level < 4)
+    while (tempPtr4->level < 8)
     {
-        tempPtr4 = (*tempPtr4).refinePoint(1.01, 3.013);
+        tempPtr4 = (*tempPtr4).refinePoint(3.013, 1.012);
         tempPtr4->printNode();
     }
     std::cout << "printing...\n";
