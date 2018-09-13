@@ -29,16 +29,6 @@ node::node (float _x, float _y, float _dx, float _dy, int _data, int _level)
     southEast = NULL;
 }
 
-void node::insert(void)
-{
-    is_leaf = false;
-
-    northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
-    southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
-    northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
-    southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
-}
-
 void node::printNode(void)
 {
     std::cout << "*************************"  << std::endl;
@@ -48,35 +38,61 @@ void node::printNode(void)
     std::cout << "Node dimensions (dx, dy): (" << dx << ", " << dy << ")" << std::endl;
 }
 
+void node::insert(void)
+{
+    if (is_leaf)
+    {
+        is_leaf = false;
+
+        northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
+        southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
+        northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
+        southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
+    }
+    else
+    {
+        std::cout << "Node is not a leaf. Cannot create all four children.\n";
+        return;
+    }
+}
+
 void node::refine(void)
 {
     // Refines all children for a given node recursively
     // Prevent excessive refinement (refinement creates 4^(max_level) nodes which can cause segfaults)
-    if (this->level >= node::max_level)
+    if (!is_leaf)
     {
-        std::cout << "Exceeded " << node::max_level << " levels of refinement. Exiting...\n";
+        std::cout << "Node is not a leaf. Cannot create all four children.\n";
         return;
     }
-    else
+    else 
     {
-        // Node will now have children, so it is no longer a leaf
-        is_leaf = false;
+        if (this->level >= node::max_level)
+        {
+            std::cout << "Exceeded " << node::max_level << " levels of refinement. Exiting...\n";
+            return;
+        }
+        else
+        {
+            // Node will now have children, so it is no longer a leaf
+            is_leaf = false;
 
-        northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
-        northWest->printNode();
-        northWest->refine();
+            northWest = new node(x-dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+0, level+1);
+            northWest->printNode();
+            northWest->refine();
 
-        southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
-        southWest->printNode();
-        southWest->refine();
+            southWest = new node(x-dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+1, level+1);
+            southWest->printNode();
+            southWest->refine();
 
-        northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
-        northEast->printNode();
-        northEast->refine();
+            northEast = new node(x+dx/4.0, y+dy/4.0, dx/2.0, dy/2.0, level*10+2, level+1);
+            northEast->printNode();
+            northEast->refine();
 
-        southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
-        southEast->printNode();
-        southEast->refine();
+            southEast = new node(x+dx/4.0, y-dy/4.0, dx/2.0, dy/2.0, level*10+3, level+1);
+            southEast->printNode();
+            southEast->refine();
+        }
     }
 }
 
@@ -135,7 +151,7 @@ node *node::refinePoint(float p_x, float p_y)
 {
     // Tests the input point and allocates a new child node in the quadrant
     // in which the point is located
-    else
+    //else
     {
         // Detect if the point is in the west half of the node
         if (p_x <= x)

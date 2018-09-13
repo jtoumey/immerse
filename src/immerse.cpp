@@ -1,8 +1,10 @@
 #include "nGon.h"
 #include "node.h"
 
-int main () {
+int main () 
+{
 
+    /*
     // trivial two-dimensional n-gon
     nGon polygon0; 
     // x vertices: {2.0, 1.0, 4.0, 5.0};
@@ -58,12 +60,6 @@ int main () {
     std::string fname2 = "pc_refine.dat";
     (*parentKey).traverseTree(fname2);
 
-    /*
-     *
-     *
-     *
-     */
-
     std::cout << "\nTest Number Three: Wrapper...\n";
  
     node *root3;
@@ -91,6 +87,14 @@ int main () {
     }
     std::cout << "printing...\n";
     (*root4).traverseTree(fname3);
+    */
+    node *rootIns = new node(2.0, 2.0, 4.0, 4.0, 1, 0);
+
+    node *head = rootIns;
+
+
+    (*head).insert();
+
 
     
 

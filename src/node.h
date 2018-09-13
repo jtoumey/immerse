@@ -5,7 +5,8 @@
 
 class node {
 
-public:   
+//public:
+private:
     // node center
     float x, y;
     float dx, dy;
@@ -22,16 +23,19 @@ public:
     
     bool is_leaf;
 
+
     // Pointers to child nodes
     node *northWest;
     node *northEast;
     node *southWest;
     node *southEast;
 
+public:
     // Constructors: Default and for during a refinement/insert operation
     node ();
     node (float _x, float _y, float _dx, float _dy, int _data, int _level);
 
+    // Member functions
     void insert(void);
     void printNode(void);
     void refine(void);
